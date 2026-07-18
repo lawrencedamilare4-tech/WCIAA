@@ -1,22 +1,65 @@
 // src/features/dashboard/index.tsx
 import { useQuery } from '@tanstack/react-query';
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components/ui/card';
 import { Skeleton } from '@/shared/components/ui/skeleton';
 import { LiveMatchCard } from './components/LiveMatchcard';
 import { TrendingPlayerCard } from './components/Trendingplayercard';
 import { useWalletUser } from '@/features/auth/components/WalletUserProvider';
 import { supabase } from '@/shared/lib/supabase';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { slideUp } from '@/shared/utils/animations';
 import { Link } from 'react-router-dom';
-import { BrainCircuit } from 'lucide-react';
+import { BrainCircuit, ChevronLeft, ChevronRight } from 'lucide-react';
+import { cn } from '@/shared/utils/cn';
 import { StatCard } from '@/shared/components/StatsCard';
+
+const TRENDING_IMAGES = [
+  {
+    src: 'https://img.youtube.com/vi/_cV8QcKp3GU/hqdefault.jpg',
+    alt: 'France 0-2 Spain | FIFA World Cup 2026 Semi-Final highlights',
+    videoUrl: 'https://www.youtube.com/watch?v=_cV8QcKp3GU',
+  },
+  {
+    src: 'https://img.youtube.com/vi/oB2mK8eJli4/hqdefault.jpg',
+    alt: 'England 1-2 Argentina | FIFA World Cup 2026 Semi-Final highlights',
+    videoUrl: 'https://www.youtube.com/watch?v=oB2mK8eJli4',
+  },
+  {
+    src: 'https://img.youtube.com/vi/zZxxDbLxEi4/hqdefault.jpg',
+    alt: 'Argentina 3-1 Switzerland | FIFA World Cup 2026 Quarter-Final highlights',
+    videoUrl: 'https://www.youtube.com/watch?v=zZxxDbLxEi4',
+  },
+  {
+    src: 'https://img.youtube.com/vi/VHoctq0AOg8/hqdefault.jpg',
+    alt: 'Spain 2-1 Belgium | FIFA World Cup 2026 Quarter-Final highlights',
+    videoUrl: 'https://www.youtube.com/watch?v=VHoctq0AOg8',
+  },
+];
 
 export default function DashboardPage() {
   const { user } = useWalletUser();
   const walletAddress = user?.walletAddress;
 
-  // 1. Live matches (global)
+  // ==================== Carousel state ====================
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+
+  useEffect(() => {
+    if (isHovered) return;
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % TRENDING_IMAGES.length);
+    }, 4000);
+    return () => clearInterval(timer);
+  }, [isHovered]);
+
+  const goTo = (index: number) => setCurrentSlide(index);
+  const prev = () =>
+    setCurrentSlide((s) => (s - 1 + TRENDING_IMAGES.length) % TRENDING_IMAGES.length);
+  const next = () => setCurrentSlide((s) => (s + 1) % TRENDING_IMAGES.length);
+
+  // ==================== Data fetching ====================
+  // 1. Live matches
   const { data: liveMatches, isLoading: loadingLive } = useQuery({
     queryKey: ['matches', 'live'],
     queryFn: async () => {
@@ -30,7 +73,7 @@ export default function DashboardPage() {
     },
   });
 
-  // 2. Trending players (sorted by goals – global)
+  // 2. Trending players
   const { data: trendingPlayers } = useQuery({
     queryKey: ['players', 'trending'],
     queryFn: async () => {
@@ -44,7 +87,7 @@ export default function DashboardPage() {
     },
   });
 
-  // 3. Latest AI report (global)
+  // 3. Latest AI report
   const { data: aiReports, isLoading: aiLoading } = useQuery({
     queryKey: ['ai-reports', 'dashboard'],
     queryFn: async () => {
@@ -59,7 +102,6 @@ export default function DashboardPage() {
   });
   const latestAI = aiReports?.[0];
 
-  // ─────────────── Per‑wallet stats ───────────────
   // 4. User predictions count
   const { data: predictionCount } = useQuery({
     queryKey: ['predictions', 'count', walletAddress],
@@ -74,7 +116,7 @@ export default function DashboardPage() {
     enabled: !!walletAddress,
   });
 
-  // 5. Premium purchases count (reports the user bought)
+  // 5. Premium purchases count
   const { data: premiumCount } = useQuery({
     queryKey: ['premium-purchases', 'count', walletAddress],
     queryFn: async () => {
@@ -88,13 +130,13 @@ export default function DashboardPage() {
     enabled: !!walletAddress,
   });
 
-  // 6. Rewards points – using a simple sum from premium_purchases or a dedicated points table
-  // For now, we'll use the number of premium purchases * 10 as a simple reward.
+  // 6. Rewards points
   const rewardsPoints = (premiumCount ?? 0) * 10;
 
+  // ==================== Render ====================
   return (
     <motion.div variants={slideUp} initial="hidden" animate="visible" className="space-y-6">
-      {/* Quick Stats Row – now shows real per‑wallet data */}
+      {/* Quick Stats Row */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard label="Live Matches" value={liveMatches?.length ?? 0} trend="neutral" />
         <StatCard
@@ -111,6 +153,57 @@ export default function DashboardPage() {
           value={walletAddress ? rewardsPoints : '—'}
           trend="up"
         />
+      </div>
+
+      {/* Trending Images Carousel */}
+      <div
+        className="relative w-full h-64 md:h-96 rounded-xl overflow-hidden group"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+        <AnimatePresence mode="wait">
+          <motion.img
+            key={currentSlide}
+            src={TRENDING_IMAGES[currentSlide].src}
+            alt={TRENDING_IMAGES[currentSlide].alt}
+            className="absolute inset-0 w-full h-full object-cover"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
+          />
+        </AnimatePresence>
+
+        {/* Overlay gradient */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+
+        {/* Navigation arrows */}
+        <button
+          onClick={prev}
+          className="absolute left-3 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/30 text-white opacity-0 group-hover:opacity-100 transition-opacity"
+        >
+          <ChevronLeft className="h-5 w-5" />
+        </button>
+        <button
+          onClick={next}
+          className="absolute right-3 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/30 text-white opacity-0 group-hover:opacity-100 transition-opacity"
+        >
+          <ChevronRight className="h-5 w-5" />
+        </button>
+
+        {/* Dots */}
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+          {TRENDING_IMAGES.map((_, idx) => (
+            <button
+              key={idx}
+              onClick={() => goTo(idx)}
+              className={cn(
+                'w-2.5 h-2.5 rounded-full transition-all',
+                idx === currentSlide ? 'bg-white scale-110' : 'bg-white/50'
+              )}
+            />
+          ))}
+        </div>
       </div>
 
       {/* Live Matches */}
@@ -136,7 +229,9 @@ export default function DashboardPage() {
         )}
       </div>
 
+      {/* AI Insight + Trending Players side‑by‑side */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* AI Summary */}
         <Card className="lg:col-span-2">
           <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle>AI Insight</CardTitle>
@@ -167,6 +262,7 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
 
+        {/* Trending Players */}
         <Card>
           <CardHeader>
             <CardTitle>Trending Players</CardTitle>
