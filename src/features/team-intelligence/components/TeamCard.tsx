@@ -8,7 +8,7 @@ export function TeamCard({ team }: { team: Team }) {
   return (
     <Card
       className="cursor-pointer hover:shadow-md transition-shadow"
-      onClick={() => navigate(`/app/teams/${team.id}`)}
+      onClick={() => navigate(`/teams/${team.id}`)}
     >
       <CardContent className="flex flex-col items-center justify-center p-6">
         {/* flag placeholder */}

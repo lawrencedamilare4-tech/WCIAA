@@ -1,22 +1,29 @@
+// src/features/player-intelligence/PlayerDetailPage.tsx
 import { useParams } from 'react-router-dom';
 import { usePlayerDetail } from './hooks/usePlayerDetail';
-import { usePlayerAIAnalysis } from './hooks/usePlayerAIAnalysis';
 import { PlayerDetailHero } from './components/PlayerDetailHero';
 import { StatsRadarChart } from './components/StatsRadarChart';
 import { PlayerRecentActivity } from './components/PlayerRecentActivity';
-import { AIPlayerReport } from './components/AIPlayerReport';
+import { Skeleton } from '@/shared/components/ui/skeleton';
 import { motion } from 'framer-motion';
-import { Skeleton } from '../../shared/components/ui/skeleton';
-import { slideUp } from '../../shared/utils/animations';
-import { Card, CardContent } from '@/shared/components/ui/card';
+import { slideUp } from '@/shared/utils/animations';
+import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components/ui/card';
+import { usePlayerGroqAnalysis } from './hooks/usePlayergroqAnalysis';
+import Markdown from 'react-markdown';
 
 export default function PlayerDetailPage() {
   const { playerId } = useParams<{ playerId: string }>();
   const { data: player, isLoading, error } = usePlayerDetail(playerId);
-  const { data: aiReport, isLoading: aiLoading } = usePlayerAIAnalysis(playerId);
 
-  if (!playerId) return <div className="text-danger">No player ID provided.</div>;
-  if (error) return <div className="text-danger">Failed to load player.</div>;
+  // Live Groq analysis
+  const {
+    data: aiAnalysis,
+    isLoading: aiLoading,
+    error: aiError,
+  } = usePlayerGroqAnalysis(player?.name);
+
+  if (!playerId) return <div className="text-danger p-8">No player ID provided.</div>;
+  if (error) return <div className="text-danger p-8">Failed to load player.</div>;
   if (isLoading || !player) {
     return (
       <div className="p-6 space-y-6">
@@ -26,7 +33,7 @@ export default function PlayerDetailPage() {
     );
   }
 
-  const radarStats: Record<string, number> = {
+  const radarStats = {
     pace: player.stats?.pace ?? 0,
     shooting: player.stats?.shooting ?? 0,
     passing: player.stats?.passing ?? 0,
@@ -54,17 +61,23 @@ export default function PlayerDetailPage() {
 
         <PlayerRecentActivity playerId={player.id} />
 
-        <div>
-          {aiLoading ? (
-            <Skeleton className="h-40" />
-          ) : aiReport ? (
-            <AIPlayerReport report={aiReport} />
-          ) : (
-            <div className="text-sm text-text-secondary p-4 border rounded-md">
-              No AI analysis available.
-            </div>
-          )}
-        </div>
+        {/* AI Scout Report – live from Groq */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-sm">AI Scout Report</CardTitle>
+          </CardHeader>
+          <CardContent>
+            {aiLoading ? (
+              <Skeleton className="h-40 w-full" />
+            ) : aiError ? (
+              <p className="text-sm text-danger">
+                Could not load analysis. {aiError instanceof Error ? aiError.message : ''}
+              </p>
+            ) : (
+              <Markdown>{aiAnalysis || 'No analysis available.'}</Markdown>
+            )}
+          </CardContent>
+        </Card>
       </div>
     </motion.div>
   );

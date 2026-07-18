@@ -1,20 +1,30 @@
+// src/features/team-intelligence/TeamDetailPage.tsx
 import { useParams } from 'react-router-dom';
 import { useTeamDetail } from './hooks/useTeamDetail';
-import { useTeamAIAnalysis } from './hooks/useTeamAIAnalysis';
 import { TeamDetailHero } from './components/TeamDetailHero';
 import { SquadTable } from './components/SquadTable';
-import { AITeamReport } from './components/AITeamReport';
 import { Skeleton } from '@/shared/components/ui/skeleton';
 import { motion } from 'framer-motion';
 import { slideUp } from '@/shared/utils/animations';
+import { useTeamGroqAnalysis } from './hooks/useTeamGroqAnalysis';
+import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components/ui/card';
+import Markdown from 'react-markdown';
 
 export default function TeamDetailPage() {
   const { teamId } = useParams<{ teamId: string }>();
   const { data, isLoading, error } = useTeamDetail(teamId);
-  const { data: aiReport, isLoading: aiLoading } = useTeamAIAnalysis(teamId);
 
-  if (!teamId) return <div className="text-danger">No team ID provided.</div>;
-  if (error) return <div className="text-danger">Failed to load team.</div>;
+  const teamName = data?.team.name;
+  const {
+    data: aiAnalysis,
+    isLoading: aiLoading,
+    error: aiError,
+  } = useTeamGroqAnalysis(teamName);
+
+  // ---- Error / Loading ----
+  if (!teamId) return <div className="text-danger p-8">No team ID provided.</div>;
+  if (error) return <div className="text-danger p-8">Failed to load team.</div>;
+
   if (isLoading || !data) {
     return (
       <div className="p-6 space-y-6">
@@ -39,17 +49,24 @@ export default function TeamDetailPage() {
         <div className="lg:col-span-2">
           <SquadTable players={players} />
         </div>
-        <div>
-          {aiLoading ? (
-            <Skeleton className="h-40" />
-          ) : aiReport ? (
-            <AITeamReport report={aiReport} />
-          ) : (
-            <div className="text-sm text-text-secondary p-4 border rounded-md">
-              No AI analysis available.
-            </div>
-          )}
-        </div>
+
+        {/* AI Performance Analysis – live from Groq */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-sm">AI Performance Analysis</CardTitle>
+          </CardHeader>
+          <CardContent>
+            {aiLoading ? (
+              <Skeleton className="h-40 w-full" />
+            ) : aiError ? (
+              <p className="text-sm text-danger">
+                Could not load analysis. {aiError instanceof Error ? aiError.message : ''}
+              </p>
+            ) : (
+              <Markdown>{aiAnalysis || 'No analysis available.'}</Markdown>
+            )}
+          </CardContent>
+        </Card>
       </div>
     </motion.div>
   );

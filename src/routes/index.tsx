@@ -16,6 +16,7 @@ import SettingsPage from "../features/settings";
 import { AppLayout } from "../app/layout";
 import { AuthGuard } from "./guards/AuthGuard";
 import TacticalCenterPage from "@/features/tactical-center";
+import TeamDetailPage from "@/features/team-intelligence/TeamDetailPage";
 
 export const router = createBrowserRouter([
   {
@@ -53,7 +54,7 @@ export const router = createBrowserRouter([
       },
       {
         path: 'teams/:teamId',
-        element: <Suspense><TeamIntelligencePage /></Suspense>
+        element: <Suspense><TeamDetailPage /></Suspense>,
       },
       {
         path: 'players',

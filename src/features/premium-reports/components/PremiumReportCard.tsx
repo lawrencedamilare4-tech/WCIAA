@@ -55,7 +55,8 @@ export function PremiumReportCard({ match, reportTypes, userPurchases }: Props) 
                 >
                   {purchaseMutation.isPending ? 'Processing...' : 'Buy'}
                 </Button>
-                  <Button className='text-black' onClick={() => purchaseMutation.mutate('cctp')}>
+                  <Button                   disabled={!walletConnected || purchaseMutation.isPending}
+ className='text-black' onClick={() => purchaseMutation.mutate('cctp')}>
                     Pay with USDC (CCTP)
                   </Button>
                 </div>

@@ -32,7 +32,7 @@ export default function NotificationsPage() {
         <p className="text-gray-500 text-center max-w-md">
           Connect your wallet to see your alerts, match events, and updates.
         </p>
-        <Button onClick={connect}>
+        <Button className='text=black' onClick={connect}>
           <Wallet className="mr-2 h-4 w-4" />
           Connect Wallet
         </Button>

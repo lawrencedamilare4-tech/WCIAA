@@ -8,7 +8,7 @@ export function PlayerCard({ player }: { player: Player }) {
   return (
     <Card
       className="cursor-pointer hover:shadow-md transition-shadow"
-      onClick={() => navigate(`/app/players/${player.id}`)}
+      onClick={() => navigate(`/players/${player.id}`)}
     >
       <CardContent className="flex items-center gap-4 p-4">
         <div className="w-10 h-10 rounded-full bg-bg-tertiary flex items-center justify-center text-sm font-bold">

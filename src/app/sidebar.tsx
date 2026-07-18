@@ -69,7 +69,7 @@ export function Sidebar({ className }: SidebarProps) {
             <img
               src="/logo1.png"
               alt="WCIA Logo"
-              className="h-8 w-8 rounded-md bg-gray-200 object-cover"
+              className="h-8 w-8 rounded-md bg-black object-cover"
               // Fallback in case the image is missing
               onError={(e) => {
                 (e.target as HTMLImageElement).style.display = 'none';

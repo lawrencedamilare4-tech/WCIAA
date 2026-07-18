@@ -11,7 +11,7 @@ export function TeamDetailHero({ team, standing }: Props) {
     <Card className="p-6">
       <div className="flex flex-col sm:flex-row items-center gap-6">
         <div className="w-20 h-20 rounded-full bg-bg-tertiary flex items-center justify-center text-3xl">
-          {team.flag ?? '🏳️'}
+          {team.flag ? <img src={team.flag} alt={team.name} className="w-full h-full object-cover" /> : '🏳️'}
         </div>
         <div>
           <h1 className="text-2xl font-bold">{team.name}</h1>
