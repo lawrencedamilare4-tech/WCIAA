@@ -12,10 +12,10 @@ interface LeaderboardEntry {
 
 interface Props {
   entries: LeaderboardEntry[];
-  currentUserId?: string;
+  currentWalletAddress?: string;
 }
 
-export function LeaderboardTable({ entries, currentUserId }: Props) {
+export function LeaderboardTable({ entries, currentWalletAddress }: Props) {
   return (
     <Card>
       <CardHeader>
@@ -37,7 +37,7 @@ export function LeaderboardTable({ entries, currentUserId }: Props) {
                   key={entry.id}
                   className={cn(
                     'border-b border-border-primary last:border-0',
-                    entry.id === currentUserId && 'bg-brand/5'
+                    entry.id === currentWalletAddress && 'bg-brand/5'
                   )}
                 >
                   <td className="py-2 pr-4 font-mono">{entry.rank}</td>

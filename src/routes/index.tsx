@@ -15,6 +15,7 @@ import NotificationsPage from "../features/notifications/Index";
 import SettingsPage from "../features/settings";
 import { AppLayout } from "../app/layout";
 import { AuthGuard } from "./guards/AuthGuard";
+import TacticalCenterPage from "@/features/tactical-center";
 
 export const router = createBrowserRouter([
   {
@@ -73,6 +74,14 @@ export const router = createBrowserRouter([
       {
         path: 'settings',
         element: <SettingsPage />
+      },
+      {
+        path: '*',
+        element: <div className="flex items-center justify-center h-screen text-2xl font-bold">404 - Page Not Found</div>
+      },
+      {
+        path: 'tactical',
+        element: <Suspense><TacticalCenterPage /></Suspense>
       }
     ],
   },

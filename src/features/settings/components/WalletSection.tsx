@@ -17,7 +17,7 @@ export function WalletSection() {
             <Button variant="outline" size="sm" onClick={disconnect}>Disconnect</Button>
           </div>
         ) : (
-          <Button onClick={connect}>Connect Injective Wallet</Button>
+          <Button className='text-black' onClick={connect}>Connect Injective Wallet</Button>
         )}
       </CardContent>
     </Card>

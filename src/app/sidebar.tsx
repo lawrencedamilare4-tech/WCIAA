@@ -1,3 +1,4 @@
+// src/app/sidebar.tsx
 import { NavLink, useLocation, matchPath } from 'react-router-dom';
 import {
   LayoutDashboard,
@@ -31,12 +32,6 @@ interface NavItem {
 const navItems: NavItem[] = [
   { to: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
   { to: '/live', icon: PlayCircle, label: 'Live Matches' },
-  {
-    to: '/live',
-    icon: Radar,
-    label: 'Match Intelligence',
-    match: '/match/:matchId',
-  },
   { to: '/ai-analyst', icon: BrainCircuit, label: 'AI Analyst' },
   { to: '/predictions', icon: TrendingUp, label: 'Predictions' },
   { to: '/tactical', icon: Shield, label: 'Tactical Center' },
@@ -60,16 +55,28 @@ export function Sidebar({ className }: SidebarProps) {
   return (
     <motion.aside
       className={cn(
-        'flex flex-col w-60 border-r border-border-primary bg-bg-primary h-screen sticky top-0',
+        // Semi‑transparent background with a strong blur – gives a premium glass effect
+        'flex flex-col w-60 border-r border-border-primary bg-bg-primary/80 backdrop-blur-xl h-screen sticky top-0',
         className
       )}
       animate={{ width: sidebarCollapsed ? 64 : 240 }}
       transition={{ duration: 0.2 }}
     >
-      {/* Brand logo */}
+      {/* Brand logo + collapse button */}
       <div className="flex items-center justify-between h-16 px-4 border-b border-border-primary">
         {!sidebarCollapsed && (
-          <span className="text-xl font-bold tracking-tight">WCIA</span>
+          <div className="flex items-center gap-2">
+            <img
+              src="/logo1.png"
+              alt="WCIA Logo"
+              className="h-8 w-8 rounded-md bg-gray-200 object-cover"
+              // Fallback in case the image is missing
+              onError={(e) => {
+                (e.target as HTMLImageElement).style.display = 'none';
+              }}
+            />
+            <span className="text-xl font-bold tracking-tight">WCIA</span>
+          </div>
         )}
         <button
           onClick={toggleSidebar}
@@ -83,6 +90,7 @@ export function Sidebar({ className }: SidebarProps) {
         </button>
       </div>
 
+      {/* Navigation items */}
       <nav className="flex-1 px-2 py-4 space-y-1 overflow-y-auto">
         {navItems.map((item) => {
           const patterns = Array.isArray(item.match)
@@ -104,10 +112,11 @@ export function Sidebar({ className }: SidebarProps) {
                 sidebarCollapsed && 'justify-center px-2'
               )}
             >
+              {/* Frosted glass active pill – blur backdrop */}
               {isActive && (
                 <motion.span
                   layoutId="sidebar-active-pill"
-                  className="absolute inset-0 rounded-md bg-bg-tertiary"
+                  className="absolute inset-0 rounded-md bg-gray-200 backdrop-blur-lg border border-white/20 dark:border-white/10"
                   transition={{ type: 'spring', stiffness: 500, damping: 40 }}
                 />
               )}
@@ -130,7 +139,7 @@ export function Sidebar({ className }: SidebarProps) {
         })}
       </nav>
 
-      {/* Bottom section (user info) */}
+      {/* Bottom user info */}
       <div className="p-3 border-t border-border-primary">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 rounded-full bg-brand text-white flex items-center justify-center text-xs font-bold">

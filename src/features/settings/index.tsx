@@ -3,7 +3,6 @@ import { PreferencesSection } from './components/PreferencesSection';
 import { WalletSection } from './components/WalletSection';
 import { motion } from 'framer-motion';
 import { slideUp } from '../../shared/utils/animations';
-import { DangerZone } from './components/Dangerzone';
 import { NotificationPreferences } from './components/Notificationpreferences';
 
 export default function SettingsPage() {
@@ -15,11 +14,8 @@ export default function SettingsPage() {
       animate="visible"
     >
       <h1 className="text-2xl font-bold">Settings</h1>
-      <ProfileSection />
-      <PreferencesSection />
       <NotificationPreferences />
       <WalletSection />
-      <DangerZone />
     </motion.div>
   );
 }
