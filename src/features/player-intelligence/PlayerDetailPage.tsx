@@ -6,9 +6,9 @@ import { StatsRadarChart } from './components/StatsRadarChart';
 import { PlayerRecentActivity } from './components/PlayerRecentActivity';
 import { AIPlayerReport } from './components/AIPlayerReport';
 import { motion } from 'framer-motion';
-import { Card, CardContent } from '../../shared/components/ui/Card';
 import { Skeleton } from '../../shared/components/ui/skeleton';
 import { slideUp } from '../../shared/utils/animations';
+import { Card, CardContent } from '@/shared/components/ui/card';
 
 export default function PlayerDetailPage() {
   const { playerId } = useParams<{ playerId: string }>();
