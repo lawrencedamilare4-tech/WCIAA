@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import type { Player } from '../types';
-import { Card, CardContent } from '../../../shared/components/ui/Card';
+import { Card, CardContent } from '@/shared/components/ui/card';
 
 export function PlayerCard({ player }: { player: Player }) {
   const navigate = useNavigate();
