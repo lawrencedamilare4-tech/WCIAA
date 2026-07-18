@@ -8,8 +8,8 @@ import { Skeleton } from '@/shared/components/ui/skeleton';
 import { motion } from 'framer-motion';
 import { slideUp } from '@/shared/utils/animations';
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components/ui/card';
-import { usePlayerGroqAnalysis } from './hooks/usePlayergroqAnalysis';
 import Markdown from 'react-markdown';
+import { usePlayerGroqAnalysis } from './hooks/usePlayerGroqAnalysis';
 
 export default function PlayerDetailPage() {
   const { playerId } = useParams<{ playerId: string }>();
