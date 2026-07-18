@@ -1,0 +1,9 @@
+@import "tailwindcss";
+
+.hided {
+    display: none;
+}
+
+.hidden {
+    display: none;
+}
