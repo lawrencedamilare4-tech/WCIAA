@@ -1,4 +1,3 @@
-// AITournamentInsight.tsx
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components/ui/card';
 import { Markdown } from '../../../shared/components/Markdown';
 

@@ -45,7 +45,7 @@ export default function RewardsPage() {
           Connect your wallet to see your points, rank on the leaderboard, and earn rewards
           for predictions and premium purchases.
         </p>
-        <Button onClick={connect}>
+        <Button className='text-black' onClick={connect}>
           <Wallet className="mr-2 h-4 w-4" />
           Connect Wallet
         </Button>

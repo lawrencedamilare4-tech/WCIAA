@@ -1,4 +1,3 @@
-// src/features/predictions/components/PredictionCard.tsx
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components/ui/card';
 import { ConfidenceBar } from './ConfidenceBar';
 import { Badge } from '@/shared/components/ui/badge';
@@ -33,7 +32,6 @@ export function PredictionCard({ match, aiPrediction, userPrediction }: Props) {
         </div>
       </CardHeader>
       <CardContent className="space-y-4">
-        {/* AI Prediction */}
         <div>
           <p className="text-xs text-black mb-1">AI Prediction</p>
           <div className="flex items-center gap-3">

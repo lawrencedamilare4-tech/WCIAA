@@ -15,7 +15,6 @@ export function usePredictions() {
 
   const matchIds = (matchesQuery.data ?? []).map((m) => m.id);
 
-  // AI predictions (wallet_address is null)
   const aiQuery = useQuery({
     queryKey: ['predictions', 'ai', matchIds],
     queryFn: () => getAIPredictions(matchIds),

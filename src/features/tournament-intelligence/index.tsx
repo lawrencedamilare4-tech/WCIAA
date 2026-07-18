@@ -22,7 +22,6 @@ export default function TournamentIntelligencePage() {
     >
       <h1 className="text-2xl font-bold">Tournament Intelligence</h1>
 
-      {/* AI Insight at top */}
       {aiLoading ? <Skeleton className="h-40" /> : <AITournamentInsight report={aiReport} />}
 
       {/* Group Stage */}

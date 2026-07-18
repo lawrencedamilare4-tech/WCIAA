@@ -4,6 +4,7 @@ import { useSubmitPrediction } from '../hooks/useSubmitPrediction';
 import type { PredictionRow } from '../types';
 import { Button } from '../../../shared/components/ui/button';
 import { Input } from '../../../shared/components/ui/Input';
+import { useWalletUser } from '@/features/auth/components/WalletUserProvider';
 
 interface Props {
   matchId: string;
@@ -14,6 +15,7 @@ export function UserPredictionForm({ matchId, existingPrediction }: Props) {
   const [homeScore, setHomeScore] = useState<number>(existingPrediction?.predicted_home_score ?? 0);
   const [awayScore, setAwayScore] = useState<number>(existingPrediction?.predicted_away_score ?? 0);
   const mutation = useSubmitPrediction(matchId);
+  const { user } = useWalletUser();
 
   useEffect(() => {
     setHomeScore(existingPrediction?.predicted_home_score ?? 0);
@@ -44,9 +46,10 @@ export function UserPredictionForm({ matchId, existingPrediction }: Props) {
         className="w-16 h-8 text-center text-sm"
         placeholder="0"
       />
+      {user &&
       <Button className='text-black' type="submit" size="sm" disabled={mutation.isPending}>
         {mutation.isPending ? 'Saving...' : 'Save'}
-      </Button>
+      </Button> }
     </form>
   );
 }

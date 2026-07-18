@@ -89,7 +89,6 @@ export default function MatchIntelligencePage() {
     enabled: !!matchId,
   });
 
-  // 3. Fetch latest AI match summary
   const {
     data: aiReport,
     isLoading: aiReportLoading,
@@ -170,7 +169,6 @@ export default function MatchIntelligencePage() {
         <StatCard label="Corners" value="7" />
       </div>
 
-      {/* AI Summary */}
       <Card>
         <CardHeader>
           <CardTitle>AI Match Summary</CardTitle>
