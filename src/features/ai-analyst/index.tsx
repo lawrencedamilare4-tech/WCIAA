@@ -31,7 +31,7 @@ export default function AIAnalystPage() {
         <p className="text-gray-500 text-center max-w-md">
           Connect your wallet to chat with the AI Analyst and get personalised football insights.
         </p>
-        <Button onClick={connect}>
+        <Button className='text-black' onClick={connect}>
           <Wallet className="mr-2 h-4 w-4" />
           Connect Wallet
         </Button>
