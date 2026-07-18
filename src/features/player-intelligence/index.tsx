@@ -1,11 +1,11 @@
 import { usePlayers } from './hooks/usePlayers';
 import { PlayerCard } from './components/PlayerCard';
-import { Input } from '@/shared/components/ui/input';
 import { Skeleton } from '@/shared/components/ui/skeleton';
 import { Button } from '@/shared/components/ui/button';
 import { motion } from 'framer-motion';
 import { slideUp } from '@/shared/utils/animations';
 import { useEffect, useRef, useCallback } from 'react';
+import { Input } from '@/shared/components/ui/Input';
 
 export default function PlayerIntelligencePage() {
   const {
@@ -73,6 +73,8 @@ export default function PlayerIntelligencePage() {
               <PlayerCard key={player.id} player={player} />
             ))}
           </div>
+
+          {/* j */}
 
           {/* Load more trigger */}
           <div ref={loadMoreRef} className="flex justify-center py-4">
