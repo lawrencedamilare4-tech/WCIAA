@@ -46,6 +46,7 @@ export function PremiumReportCard({ match, reportTypes, userPurchases }: Props) 
                   View Report
                 </Button>
               ) : (
+                <div className="flex items-center gap-2">
                 <Button
                   size="sm"
                   className='text-black'
@@ -54,6 +55,10 @@ export function PremiumReportCard({ match, reportTypes, userPurchases }: Props) 
                 >
                   {purchaseMutation.isPending ? 'Processing...' : 'Buy'}
                 </Button>
+                  <Button className='text-black' onClick={() => purchaseMutation.mutate('cctp')}>
+                    Pay with USDC (CCTP)
+                  </Button>
+                </div>
               )}
             </div>
           );

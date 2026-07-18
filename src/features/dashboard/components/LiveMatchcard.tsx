@@ -1,7 +1,7 @@
 // src/features/dashboard/components/LiveMatchCard.tsx
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../../../shared/components/ui/button';
-import { Card } from '../../../shared/components/ui/Card';
+import { Card } from '@/shared/components/ui/card';
 
 interface Props {
   match: any;
