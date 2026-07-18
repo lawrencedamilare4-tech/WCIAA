@@ -35,7 +35,7 @@ export function MobileNav({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        'fixed bottom-0 left-0 backdrop-blur-lg right-0 bg-bg-primary border-t border-border-primary z-50',
+        'fixed bottom-0 left-0 bg-white backdrop-blur-lg right-0 bg-bg-primary border-t border-border-primary z-50',
         'sm:opacity-0 sm:h-0',   // hidden on desktop
         className
       )}
