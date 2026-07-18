@@ -136,25 +136,7 @@ export default function DashboardPage() {
   // ==================== Render ====================
   return (
     <motion.div variants={slideUp} initial="hidden" animate="visible" className="space-y-6">
-      {/* Quick Stats Row */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard label="Live Matches" value={liveMatches?.length ?? 0} trend="neutral" />
-        <StatCard
-          label="My Predictions"
-          value={walletAddress ? (predictionCount ?? 0) : '—'}
-          trend="up"
-        />
-        <StatCard
-          label="Premium Reports"
-          value={walletAddress ? (premiumCount ?? 0) : '—'}
-        />
-        <StatCard
-          label="Rewards Earned"
-          value={walletAddress ? rewardsPoints : '—'}
-          trend="up"
-        />
-      </div>
-
+      
       {/* Trending Images Carousel */}
       <div
         className="relative w-full h-64 md:h-96 rounded-xl overflow-hidden group"
@@ -205,6 +187,26 @@ export default function DashboardPage() {
           ))}
         </div>
       </div>
+      
+      {/* Quick Stats Row */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <StatCard label="Live Matches" value={liveMatches?.length ?? 0} trend="neutral" />
+        <StatCard
+          label="My Predictions"
+          value={walletAddress ? (predictionCount ?? 0) : '—'}
+          trend="up"
+        />
+        <StatCard
+          label="Premium Reports"
+          value={walletAddress ? (premiumCount ?? 0) : '—'}
+        />
+        <StatCard
+          label="Rewards Earned"
+          value={walletAddress ? rewardsPoints : '—'}
+          trend="up"
+        />
+      </div>
+
 
       {/* Live Matches */}
       <div>
