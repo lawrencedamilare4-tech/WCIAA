@@ -1,5 +1,5 @@
 import { cn } from "../utils/cn";
-import { Card } from "./ui/Card";
+import { Card } from "./ui/card";
 
 
 interface StatCardProps {
