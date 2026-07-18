@@ -1,5 +1,5 @@
 // src/features/live-matches/components/MatchList.tsx
-import { Card } from '../../../shared/components/ui/Card';
+import { Card } from '@/shared/components/ui/card';
 import { Skeleton } from '../../../shared/components/ui/skeleton';
 import { MatchCard } from './MatchCard';
 
